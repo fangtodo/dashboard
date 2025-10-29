@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Personal Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 16px;
+            color: #e4e4e7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #27272a;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+        }
+
+        h1 {
+            color: #f4f4f5;
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        .subtitle {
+            color: #a1a1aa;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #f4f4f5;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border: 2px solid #3f3f46;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            background: #18181b;
+            color: #e4e4e7;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        input[type="number"] {
+            flex: 0 0 80px;
+            min-width: 80px;
+        }
+
+        input[type="text"]:disabled, input[type="number"]:disabled {
+            background: #27272a;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background: #52525b;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: #18181b;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+            border: 1px solid #3f3f46;
+        }
+
+        .todo-item:hover {
+            background: #1f1f23;
+        }
+
+        .todo-item.completed {
+            opacity: 0.5;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+        }
+
+        .todo-item.recurring {
+            background: #0d2818;
+            border: 1px solid #1e4031;
+        }
+
+        .todo-item.recurring:hover {
+            background: #14362a;
+        }
+
+        .todo-item.workout {
+            background: #0f1e2e;
+            border: 1px solid #1e3a5f;
+        }
+
+        .todo-item.workout:hover {
+            background: #182a3f;
+        }
+
+        .todo-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #3b82f6;
+        }
+
+        .todo-text {
+            flex: 1;
+            font-size: 16px;
+            color: #e4e4e7;
+        }
+
+        .todo-badge {
+            padding: 4px 10px;
+            background: #2d5a3f;
+            color: #d1fae5;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .workout-badge {
+            padding: 4px 10px;
+            background: #334e68;
+            color: #dae7f2;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .todo-delete {
+            padding: 8px 14px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .todo-delete:hover {
+            background: #b91c1c;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #71717a;
+            font-size: 16px;
+        }
+
+        .settings-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #3f3f46;
+        }
+
+        .settings-link a {
+            color: #71717a;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .settings-link a:hover {
+            color: #a1a1aa;
+        }
+
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-content {
+            background: #27272a;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid #3f3f46;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            color: #f4f4f5;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .settings-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .settings-buttons button {
+            width: 100%;
+            padding: 14px;
+        }
+
+        .settings-close {
+            margin-top: 16px;
+            background: #52525b;
+        }
+
+        .settings-close:hover {
+            background: #71717a;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-buttons button {
+            flex: 1;
+            min-width: 80px;
+            background: #3f3f46;
+            color: #a1a1aa;
+        }
+
+        .tab-buttons button.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .recurring-label {
+            font-size: 14px;
+            color: #a1a1aa;
+            white-space: nowrap;
+        }
+
+        .workout-card {
+            background: #18181b;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #3f3f46;
+        }
+
+        .workout-card.current {
+            border: 2px solid #334e68;
+            background: #0f1e2e;
+        }
+
+        .workout-card.view-mode {
+            opacity: 0.9;
+        }
+
+        .workout-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .workout-card-title {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .workout-card-title input {
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border: 2px solid #3f3f46;
+            border-radius: 8px;
+            background: #18181b;
+            color: #e4e4e7;
+        }
+
+        .workout-card-title input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .workout-card-title .view-text {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            color: #f4f4f5;
+        }
+
+        .workout-card-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .workout-card-buttons button {
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+
+        .exercise-editor {
+            list-style: none;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #27272a;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .exercise-item.view-mode {
+            background: #18181b;
+        }
+
+        .drag-handle {
+            color: #71717a;
+            font-size: 18px;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .exercise-item input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #18181b;
+            color: #e4e4e7;
+        }
+
+        .exercise-item input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .exercise-item .view-text {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 14px;
+            color: #e4e4e7;
+        }
+
+        .exercise-item button {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .add-exercise-btn {
+            width: 100%;
+            padding: 12px;
+            background: #16a34a;
+            margin-top: 8px;
+        }
+
+        .add-exercise-btn:hover {
+            background: #15803d;
+        }
+
+        .add-workout-btn {
+            width: 100%;
+            padding: 14px;
+            background: #3b82f6;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .move-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .move-buttons button {
+            padding: 6px 10px;
+            font-size: 12px;
+            background: #52525b;
+        }
+
+        .move-buttons button:hover:not(:disabled) {
+            background: #71717a;
+        }
+
+        .workout-info-text {
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #2d4a5e 0%, #3d5a6f 100%);
+            color: white;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .today-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #334e68;
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .edit-mode-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .edit-mode-controls button {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .edit-mode-controls .btn-edit {
+            background: #3b82f6;
+        }
+
+        .edit-mode-controls .btn-save {
+            background: #16a34a;
+        }
+
+        .edit-mode-controls .btn-cancel {
+            background: #52525b;
+        }
+
+        .edit-mode-controls .btn-cancel:hover {
+            background: #71717a;
+        }
+
+        /* Mobile specific optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            input[type="text"], input[type="number"] {
+                min-width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .tab-buttons button {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+
+            .workout-card-header {
+                flex-direction: column;
+            }
+
+            .move-buttons {
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .workout-card-buttons {
+                width: 100%;
+            }
+
+            .workout-card-buttons button {
+                flex: 1;
+            }
+        }
+
+        /* Prevent zoom on input focus (iOS) */
+        @supports (-webkit-touch-callout: none) {
+            input[type="text"],
+            input[type="number"] {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tab Navigation -->
+        <div class="tab-buttons">
+            <button class="active" onclick="switchTab('today')">📅 Today</button>
+            <button onclick="switchTab('general')">✓ To-Dos</button>
+            <button onclick="switchTab('recurring')">🔄 Recurring</button>
+            <button onclick="switchTab('workout')">💪 Workout</button>
+        </div>
+
+        <!-- Today's Tasks Tab -->
+        <div class="section-content active" id="todayTab">
+            <div class="section">
+                <h2 class="section-title" id="todayTitle">Today's Tasks</h2>
+                <ul class="todo-list" id="todayList">
+                    <!-- Today's tasks will be rendered here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- General Todos Tab -->
+        <div class="section-content" id="generalTab">
+            <div class="section">
+                <h2 class="section-title">✓ General To-Dos</h2>
+
+                <div class="input-group">
+                    <input
+                        type="text"
+                        id="todoInput"
+                        placeholder="What needs to be done?"
+                        onkeypress="if(event.key==='Enter') addTodo()"
+                    >
+                    <button onclick="addTodo()">Add Task</button>
+                </div>
+
+                <ul class="todo-list" id="todoList">
+                    <!-- Todos will be rendered here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recurring Tasks Tab -->
+        <div class="section-content" id="recurringTab">
+            <div class="section">
+                <h2 class="section-title">🔄 Recurring Tasks</h2>
+
+                <div class="input-group">
+                    <input
+                        type="text"
+                        id="recurringInput"
+                        placeholder="Add a recurring task..."
+                        onkeypress="if(event.key==='Enter') addRecurringTask()"
+                    >
+                    <span class="recurring-label">Every</span>
+                    <input
+                        type="number"
+                        id="recurringDays"
+                        min="1"
+                        max="30"
+                        value="1"
+                    >
+                    <span class="recurring-label">day(s)</span>
+                    <button onclick="addRecurringTask()">Add</button>
+                </div>
+
+                <ul class="todo-list" id="recurringList">
+                    <!-- Recurring tasks will be rendered here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Workout Tab -->
+        <div class="section-content" id="workoutTab">
+            <div class="section">
+                <h2 class="section-title">💪 Workout Plans Editor</h2>
+
+                <div id="currentWorkoutInfo"></div>
+
+                <div class="edit-mode-controls" id="editModeControls">
+                    <!-- Edit/Save/Cancel buttons will be rendered here -->
+                </div>
+
+                <button class="add-workout-btn" id="addWorkoutBtn" onclick="addWorkoutPlan()" style="display: none;">
+                    + Add New Workout Plan
+                </button>
+
+                <div id="workoutEditor">
+                    <!-- Workout plans will be rendered here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Link -->
+        <div class="settings-link">
+            <a onclick="openSettings()">Settings</a>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="settings-modal" id="settingsModal" onclick="closeSettingsIfClickedOutside(event)">
+            <div class="settings-content" onclick="event.stopPropagation()">
+                <h3 class="settings-title">Settings</h3>
+                <div class="settings-buttons">
+                    <button onclick="exportData()">📥 Export Backup</button>
+                    <button onclick="document.getElementById('importFile').click()">📤 Import Backup</button>
+                    <button class="settings-close" onclick="closeSettings()">Close</button>
+                </div>
+                <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Storage key constant
+        const STORAGE_KEY = 'myDashboardData';
+
+        // Edit mode state
+        let isEditMode = false;
+        let editModeBackup = null;
+
+        // Open settings modal
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        // Close settings modal
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // Close settings if clicked outside
+        function closeSettingsIfClickedOutside(event) {
+            if (event.target.id === 'settingsModal') {
+                closeSettings();
+            }
+        }
+
+        // Initialize default data structure
+        function getDefaultData() {
+            return {
+                generalTodos: [],
+                recurringTasks: [],
+                workoutPlans: [
+                    {
+                        id: 1,
+                        name: "Plan A: Push Day",
+                        exercises: ["Push-ups", "Bench Press", "Overhead Press", "Tricep Dips", "Lateral Raises"]
+                    },
+                    {
+                        id: 2,
+                        name: "Plan B: Pull Day",
+                        exercises: ["Pull-ups", "Barbell Rows", "Lat Pulldowns", "Bicep Curls", "Face Pulls"]
+                    },
+                    {
+                        id: 3,
+                        name: "Plan C: Leg Day",
+                        exercises: ["Squats", "Lunges", "Romanian Deadlifts", "Leg Press", "Calf Raises"]
+                    }
+                ],
+                workoutState: {
+                    lastRotationDate: null,
+                    todayExercisesCompleted: [],
+                    currentPlanId: null
+                }
+            };
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    // Ensure workoutState has required fields
+                    if (!data.workoutState) {
+                        data.workoutState = {
+                            lastRotationDate: null,
+                            todayExercisesCompleted: [],
+                            currentPlanId: null
+                        };
+                    }
+                    if (!data.workoutState.todayExercisesCompleted) {
+                        data.workoutState.todayExercisesCompleted = [];
+                    }
+                    if (!data.workoutState.currentPlanId && data.workoutPlans.length > 0) {
+                        data.workoutState.currentPlanId = data.workoutPlans[0].id;
+                    }
+                    if (!data.workoutPlans) {
+                        data.workoutPlans = [];
+                    }
+                    return data;
+                } catch (e) {
+                    console.error('Failed to parse stored data:', e);
+                    return getDefaultData();
+                }
+            }
+            return getDefaultData();
+        }
+
+        // Save data to localStorage
+        function saveData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // Generate unique ID
+        function generateId(data) {
+            const todoIds = data.generalTodos.map(t => t.id);
+            const recurringIds = data.recurringTasks.map(t => t.id);
+            const workoutIds = data.workoutPlans.map(w => w.id);
+            const allIds = [...todoIds, ...recurringIds, ...workoutIds];
+            return allIds.length > 0 ? Math.max(...allIds) + 1 : 1;
+        }
+
+        // Check if a date is today
+        function isToday(dateString) {
+            if (!dateString) return false;
+            const date = new Date(dateString);
+            const today = new Date();
+            return date.toDateString() === today.toDateString();
+        }
+
+        // Format today's date (e.g., "October 29th")
+        function formatTodayDate() {
+            const today = new Date();
+            const month = today.toLocaleString('en-US', { month: 'long' });
+            const day = today.getDate();
+
+            // Add ordinal suffix (st, nd, rd, th)
+            let suffix = 'th';
+            if (day === 1 || day === 21 || day === 31) suffix = 'st';
+            else if (day === 2 || day === 22) suffix = 'nd';
+            else if (day === 3 || day === 23) suffix = 'rd';
+
+            return `${month} ${day}${suffix}`;
+        }
+
+        // Check if task is due
+        function isTaskDue(task) {
+            if (!task.lastCompleted) return true;
+
+            const lastCompleted = new Date(task.lastCompleted);
+            const now = new Date();
+
+            // Calculate days since last completion
+            const daysSince = (now - lastCompleted) / (1000 * 60 * 60 * 24);
+
+            return daysSince >= task.intervalDays;
+        }
+
+        // Get display text for recurring interval
+        function getIntervalText(days) {
+            if (days === 1) return 'Daily';
+            if (days === 7) return 'Weekly';
+            return `Every ${days} days`;
+        }
+
+        // Check if workout should rotate (new day)
+        function shouldRotateWorkout(data) {
+            return !isToday(data.workoutState.lastRotationDate);
+        }
+
+        // Rotate workout to next day
+        function rotateWorkoutIfNeeded(data) {
+            if (shouldRotateWorkout(data) && data.workoutPlans.length > 1) {
+                // Move first plan to the end
+                const firstPlan = data.workoutPlans.shift();
+                data.workoutPlans.push(firstPlan);
+
+                // Reset state
+                data.workoutState.lastRotationDate = new Date().toISOString();
+                data.workoutState.todayExercisesCompleted = [];
+                data.workoutState.currentPlanId = data.workoutPlans[0].id;
+
+                saveData(data);
+                console.log('Workout rotated to next day');
+            } else if (shouldRotateWorkout(data)) {
+                // Just reset the date even if only one plan
+                data.workoutState.lastRotationDate = new Date().toISOString();
+                data.workoutState.todayExercisesCompleted = [];
+                if (data.workoutPlans.length > 0) {
+                    data.workoutState.currentPlanId = data.workoutPlans[0].id;
+                }
+                saveData(data);
+            }
+        }
+
+        // Clear workout completion if plan changed
+        function checkWorkoutPlanChange(data) {
+            if (data.workoutPlans.length > 0) {
+                const currentPlan = data.workoutPlans[0];
+                if (data.workoutState.currentPlanId !== currentPlan.id) {
+                    // Plan changed - reset completion
+                    data.workoutState.todayExercisesCompleted = [];
+                    data.workoutState.currentPlanId = currentPlan.id;
+                    saveData(data);
+                }
+            }
+        }
+
+        // Get all due tasks for today
+        function getTodaysTasks(data) {
+            const tasks = [];
+
+            // 1. Add due recurring tasks first
+            data.recurringTasks.filter(isTaskDue).forEach(task => {
+                tasks.push({
+                    ...task,
+                    type: 'recurring',
+                    completed: false,
+                    order: 1
+                });
+            });
+
+            // Add recurring tasks completed today (so they show up even if not "due")
+            data.recurringTasks
+                .filter(t => !isTaskDue(t) && t.lastCompleted && isToday(t.lastCompleted))
+                .forEach(task => {
+                    tasks.push({
+                        ...task,
+                        type: 'recurring',
+                        completed: true,
+                        order: 1
+                    });
+                });
+
+            // 2. Add today's workout exercises
+            if (data.workoutPlans.length > 0) {
+                const todaysPlan = data.workoutPlans[0];
+
+                todaysPlan.exercises.forEach((exercise, idx) => {
+                    tasks.push({
+                        id: `workout-${todaysPlan.id}-${idx}`,
+                        text: exercise,
+                        completed: data.workoutState.todayExercisesCompleted.includes(idx),
+                        type: 'workout',
+                        workoutPlanId: todaysPlan.id,
+                        exerciseIndex: idx,
+                        order: 2
+                    });
+                });
+            }
+
+            // 3. Add all general todos last
+            data.generalTodos.forEach(todo => {
+                tasks.push({
+                    ...todo,
+                    type: 'general',
+                    order: 3
+                });
+            });
+
+            // Sort: by completion status first (incomplete first), then by type order
+            tasks.sort((a, b) => {
+                // First sort by completion status
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                // Then sort by type order (recurring, workout, general)
+                return a.order - b.order;
+            });
+
+            return tasks;
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            // Update button states
+            const buttons = document.querySelectorAll('.tab-buttons button');
+            buttons.forEach((btn, idx) => {
+                btn.classList.remove('active');
+                if ((tabName === 'today' && idx === 0) ||
+                    (tabName === 'general' && idx === 1) ||
+                    (tabName === 'recurring' && idx === 2) ||
+                    (tabName === 'workout' && idx === 3)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update content visibility
+            document.getElementById('todayTab').classList.remove('active');
+            document.getElementById('generalTab').classList.remove('active');
+            document.getElementById('recurringTab').classList.remove('active');
+            document.getElementById('workoutTab').classList.remove('active');
+
+            if (tabName === 'today') {
+                document.getElementById('todayTab').classList.add('active');
+            } else if (tabName === 'general') {
+                document.getElementById('generalTab').classList.add('active');
+            } else if (tabName === 'recurring') {
+                document.getElementById('recurringTab').classList.add('active');
+            } else if (tabName === 'workout') {
+                document.getElementById('workoutTab').classList.add('active');
+            }
+        }
+
+        // Add new general todo
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+
+            if (!text) {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const data = loadData();
+            const newTodo = {
+                id: generateId(data),
+                text: text,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            data.generalTodos.push(newTodo);
+            saveData(data);
+
+            input.value = '';
+            render();
+        }
+
+        // Add new recurring task
+        function addRecurringTask() {
+            const input = document.getElementById('recurringInput');
+            const daysInput = document.getElementById('recurringDays');
+            const text = input.value.trim();
+            const intervalDays = parseInt(daysInput.value);
+
+            if (!text) {
+                alert('Please enter a task!');
+                return;
+            }
+
+            if (intervalDays < 1 || intervalDays > 30) {
+                alert('Please enter a valid interval between 1 and 30 days!');
+                return;
+            }
+
+            const data = loadData();
+            const newTask = {
+                id: generateId(data),
+                text: text,
+                intervalDays: intervalDays,
+                lastCompleted: null
+            };
+
+            data.recurringTasks.push(newTask);
+            saveData(data);
+
+            input.value = '';
+            daysInput.value = '1';
+            render();
+        }
+
+        // Toggle todo completion
+        function toggleTodo(id, type, exerciseIndex = null) {
+            const data = loadData();
+
+            if (type === 'workout') {
+                // Toggle workout exercise completion
+                const idx = data.workoutState.todayExercisesCompleted.indexOf(exerciseIndex);
+                if (idx > -1) {
+                    data.workoutState.todayExercisesCompleted.splice(idx, 1);
+                } else {
+                    data.workoutState.todayExercisesCompleted.push(exerciseIndex);
+                }
+            } else if (type === 'recurring') {
+                const task = data.recurringTasks.find(t => t.id === id);
+                if (task) {
+                    // Toggle: if completed today, clear it; otherwise mark as completed
+                    if (task.lastCompleted && isToday(task.lastCompleted)) {
+                        task.lastCompleted = null;
+                    } else {
+                        task.lastCompleted = new Date().toISOString();
+                    }
+                }
+            } else {
+                const todo = data.generalTodos.find(t => t.id === id);
+                if (todo) {
+                    todo.completed = !todo.completed;
+                }
+            }
+
+            saveData(data);
+            render();
+        }
+
+        // Delete todo or recurring task
+        function deleteTodo(id, type) {
+            if (!confirm('Are you sure you want to delete this task?')) {
+                return;
+            }
+
+            const data = loadData();
+
+            if (type === 'recurring') {
+                data.recurringTasks = data.recurringTasks.filter(t => t.id !== id);
+            } else {
+                data.generalTodos = data.generalTodos.filter(t => t.id !== id);
+            }
+
+            saveData(data);
+            render();
+        }
+
+        // Enter edit mode
+        function enterEditMode() {
+            const data = loadData();
+            editModeBackup = JSON.parse(JSON.stringify(data.workoutPlans));
+            isEditMode = true;
+            render();
+        }
+
+        // Save edit mode changes
+        function saveEditMode() {
+            editModeBackup = null;
+            isEditMode = false;
+            render();
+        }
+
+        // Cancel edit mode changes
+        function cancelEditMode() {
+            if (editModeBackup) {
+                const data = loadData();
+                data.workoutPlans = editModeBackup;
+                // Check if current plan changed and reset if needed
+                if (data.workoutPlans.length > 0 && data.workoutState.currentPlanId !== data.workoutPlans[0].id) {
+                    data.workoutState.todayExercisesCompleted = [];
+                    data.workoutState.currentPlanId = data.workoutPlans[0].id;
+                }
+                saveData(data);
+            }
+            editModeBackup = null;
+            isEditMode = false;
+            render();
+        }
+
+        // Add new workout plan
+        function addWorkoutPlan() {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const newPlan = {
+                id: generateId(data),
+                name: `New Workout Plan ${data.workoutPlans.length + 1}`,
+                exercises: ['Exercise 1', 'Exercise 2', 'Exercise 3']
+            };
+
+            data.workoutPlans.push(newPlan);
+            saveData(data);
+            render();
+        }
+
+        // Delete workout plan
+        function deleteWorkoutPlan(id) {
+            if (!isEditMode) return;
+            if (!confirm('Are you sure you want to delete this workout plan?')) {
+                return;
+            }
+
+            const data = loadData();
+            data.workoutPlans = data.workoutPlans.filter(w => w.id !== id);
+
+            // Reset exercise completion if we deleted today's plan
+            if (data.workoutPlans.length > 0 && data.workoutState.currentPlanId === id) {
+                data.workoutState.todayExercisesCompleted = [];
+                data.workoutState.currentPlanId = data.workoutPlans[0].id;
+            }
+
+            saveData(data);
+            render();
+        }
+
+        // Update workout plan name
+        function updateWorkoutName(id, newName) {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const plan = data.workoutPlans.find(w => w.id === id);
+            if (plan) {
+                plan.name = newName;
+                saveData(data);
+            }
+        }
+
+        // Add exercise to workout plan
+        function addExercise(planId) {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const plan = data.workoutPlans.find(w => w.id === planId);
+            if (plan) {
+                plan.exercises.push(`New Exercise ${plan.exercises.length + 1}`);
+                saveData(data);
+                render();
+            }
+        }
+
+        // Update exercise name
+        function updateExercise(planId, exerciseIndex, newName) {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const plan = data.workoutPlans.find(w => w.id === planId);
+            if (plan && plan.exercises[exerciseIndex] !== undefined) {
+                plan.exercises[exerciseIndex] = newName;
+                saveData(data);
+            }
+        }
+
+        // Delete exercise from workout plan
+        function deleteExercise(planId, exerciseIndex) {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const plan = data.workoutPlans.find(w => w.id === planId);
+            if (plan) {
+                plan.exercises.splice(exerciseIndex, 1);
+                saveData(data);
+                render();
+            }
+        }
+
+        // Move workout plan up or down
+        function moveWorkoutPlan(id, direction) {
+            if (!isEditMode) return;
+
+            const data = loadData();
+            const index = data.workoutPlans.findIndex(w => w.id === id);
+
+            if (index === -1) return;
+
+            const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+            if (newIndex < 0 || newIndex >= data.workoutPlans.length) return;
+
+            // Swap plans
+            [data.workoutPlans[index], data.workoutPlans[newIndex]] =
+            [data.workoutPlans[newIndex], data.workoutPlans[index]];
+
+            saveData(data);
+            checkWorkoutPlanChange(data);
+            render();
+        }
+
+        // Render a single todo item
+        function renderTodoItem(item, showDelete = true) {
+            let badgeHtml = '';
+            let itemClass = '';
+            let onchangeHandler = '';
+
+            if (item.type === 'workout') {
+                badgeHtml = '<span class="workout-badge">Workout</span>';
+                itemClass = 'workout';
+                onchangeHandler = `toggleTodo('${item.id}', 'workout', ${item.exerciseIndex})`;
+            } else if (item.type === 'recurring') {
+                badgeHtml = `<span class="todo-badge">${getIntervalText(item.intervalDays)}</span>`;
+                itemClass = 'recurring';
+                onchangeHandler = `toggleTodo(${item.id}, 'recurring')`;
+            } else {
+                onchangeHandler = `toggleTodo(${item.id}, 'general')`;
+            }
+
+            const deleteBtn = (showDelete && item.type !== 'workout')
+                ? `<button class="todo-delete" onclick="deleteTodo(${item.id}, '${item.type}')">Delete</button>`
+                : '';
+
+            return `
+                <li class="todo-item ${item.completed ? 'completed' : ''} ${itemClass}">
+                    <input
+                        type="checkbox"
+                        class="todo-checkbox"
+                        ${item.completed ? 'checked' : ''}
+                        onchange="${onchangeHandler}"
+                    >
+                    <span class="todo-text">
+                        ${badgeHtml}
+                        ${escapeHtml(item.text)}
+                    </span>
+                    ${deleteBtn}
+                </li>
+            `;
+        }
+
+        // Render workout editor
+        function renderWorkoutEditor(data) {
+            const editorDiv = document.getElementById('workoutEditor');
+            const currentInfo = document.getElementById('currentWorkoutInfo');
+            const editControls = document.getElementById('editModeControls');
+            const addBtn = document.getElementById('addWorkoutBtn');
+
+            if (data.workoutPlans.length === 0) {
+                currentInfo.innerHTML = '<div class="empty-state">No workout plans yet. Enter edit mode to add one!</div>';
+                editorDiv.innerHTML = '';
+            } else {
+                const todaysPlan = data.workoutPlans[0];
+                currentInfo.innerHTML = `
+                    <div class="workout-info-text">
+                        Today's Workout: ${escapeHtml(todaysPlan.name)}
+                    </div>
+                `;
+
+                editorDiv.innerHTML = data.workoutPlans.map((plan, planIndex) => {
+                    const isToday = planIndex === 0;
+                    const cardClass = isToday ? 'workout-card current' : 'workout-card';
+                    const viewModeClass = !isEditMode ? ' view-mode' : '';
+                    const todayBadge = isToday ? '<span class="today-badge">TODAY</span>' : '';
+
+                    const titleHtml = isEditMode
+                        ? `<input
+                            type="text"
+                            value="${escapeHtml(plan.name)}"
+                            onchange="updateWorkoutName(${plan.id}, this.value)"
+                            placeholder="Workout plan name"
+                        >`
+                        : `<div class="view-text">${escapeHtml(plan.name)}</div>`;
+
+                    const moveButtons = isEditMode
+                        ? `<div class="move-buttons">
+                            <button onclick="moveWorkoutPlan(${plan.id}, 'up')" ${planIndex === 0 ? 'disabled' : ''}>▲</button>
+                            <button onclick="moveWorkoutPlan(${plan.id}, 'down')" ${planIndex === data.workoutPlans.length - 1 ? 'disabled' : ''}>▼</button>
+                        </div>`
+                        : '';
+
+                    const deleteButton = isEditMode
+                        ? `<button class="todo-delete" onclick="deleteWorkoutPlan(${plan.id})">Delete</button>`
+                        : '';
+
+                    const exercisesHtml = plan.exercises.map((exercise, idx) => {
+                        const exerciseInput = isEditMode
+                            ? `<input
+                                type="text"
+                                value="${escapeHtml(exercise)}"
+                                onchange="updateExercise(${plan.id}, ${idx}, this.value)"
+                                placeholder="Exercise name"
+                            >`
+                            : `<div class="view-text">${escapeHtml(exercise)}</div>`;
+
+                        const deleteExBtn = isEditMode
+                            ? `<button class="todo-delete" onclick="deleteExercise(${plan.id}, ${idx})">×</button>`
+                            : '';
+
+                        const itemViewClass = isEditMode ? '' : ' view-mode';
+
+                        return `
+                            <li class="exercise-item${itemViewClass}">
+                                ${isEditMode ? '<span class="drag-handle">⋮⋮</span>' : ''}
+                                ${exerciseInput}
+                                ${deleteExBtn}
+                            </li>
+                        `;
+                    }).join('');
+
+                    const addExerciseBtn = isEditMode
+                        ? `<button class="add-exercise-btn" onclick="addExercise(${plan.id})">+ Add Exercise</button>`
+                        : '';
+
+                    return `
+                        <div class="${cardClass}${viewModeClass}">
+                            <div class="workout-card-header">
+                                <div class="workout-card-title">
+                                    ${todayBadge}
+                                    ${titleHtml}
+                                </div>
+                                ${moveButtons}
+                                ${deleteButton ? `<div class="workout-card-buttons">${deleteButton}</div>` : ''}
+                            </div>
+                            <ul class="exercise-editor">
+                                ${exercisesHtml}
+                            </ul>
+                            ${addExerciseBtn}
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Render edit mode controls
+            if (isEditMode) {
+                editControls.innerHTML = `
+                    <button class="btn-save" onclick="saveEditMode()">✓ Save Changes</button>
+                    <button class="btn-cancel" onclick="cancelEditMode()">✗ Cancel</button>
+                `;
+                addBtn.style.display = 'block';
+            } else {
+                editControls.innerHTML = `
+                    <button class="btn-edit" onclick="enterEditMode()">✏️ Edit Workout Plans</button>
+                `;
+                addBtn.style.display = 'none';
+            }
+        }
+
+        // Render the UI
+        function render() {
+            const data = loadData();
+
+            // Auto-rotate workout if new day
+            rotateWorkoutIfNeeded(data);
+
+            // Check if workout plan changed (e.g., reordering in edit mode)
+            checkWorkoutPlanChange(data);
+
+            // Get today's tasks
+            const todaysTasks = getTodaysTasks(data);
+
+            // Update today's date in title
+            document.getElementById('todayTitle').textContent = `${formatTodayDate()}'s Tasks`;
+
+            // Render Today's Tasks (no delete buttons)
+            const todayList = document.getElementById('todayList');
+            if (todaysTasks.length === 0) {
+                todayList.innerHTML = '<div class="empty-state">All done for today! 🎉</div>';
+            } else {
+                todayList.innerHTML = todaysTasks
+                    .map(item => renderTodoItem(item, false))
+                    .join('');
+            }
+
+            // Render General Todos (with delete buttons)
+            const todoList = document.getElementById('todoList');
+            if (data.generalTodos.length === 0) {
+                todoList.innerHTML = '<div class="empty-state">No tasks yet. Add one above to get started! 🚀</div>';
+            } else {
+                todoList.innerHTML = data.generalTodos
+                    .map(todo => renderTodoItem({...todo, type: 'general'}, true))
+                    .join('');
+            }
+
+            // Render Recurring Tasks (with delete buttons)
+            const recurringList = document.getElementById('recurringList');
+            if (data.recurringTasks.length === 0) {
+                recurringList.innerHTML = '<div class="empty-state">No recurring tasks yet. Add one above! 🔄</div>';
+            } else {
+                recurringList.innerHTML = data.recurringTasks
+                    .map(task => {
+                        const isDue = isTaskDue(task);
+                        const lastCompletedText = task.lastCompleted
+                            ? `Last completed: ${new Date(task.lastCompleted).toLocaleDateString()}`
+                            : 'Never completed';
+
+                        return `
+                            <li class="todo-item recurring ${isDue ? '' : 'completed'}">
+                                <span class="todo-text">
+                                    <span class="todo-badge">${getIntervalText(task.intervalDays)}</span>
+                                    ${escapeHtml(task.text)}
+                                    <br>
+                                    <small style="color: #a1a1aa;">${lastCompletedText}</small>
+                                </span>
+                                <button class="todo-delete" onclick="deleteTodo(${task.id}, 'recurring')">Delete</button>
+                            </li>
+                        `;
+                    })
+                    .join('');
+            }
+
+            // Render Workout Editor
+            renderWorkoutEditor(data);
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Export data as JSON file
+        function exportData() {
+            const data = loadData();
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dashboard-backup-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+
+            URL.revokeObjectURL(url);
+            alert('Backup exported successfully! 📥');
+        }
+
+        // Import data from JSON file
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    // Validate data structure
+                    if (!importedData.generalTodos || !Array.isArray(importedData.generalTodos)) {
+                        throw new Error('Invalid data format');
+                    }
+
+                    // Confirm before overwriting
+                    if (!confirm('This will replace all your current data. Continue?')) {
+                        return;
+                    }
+
+                    saveData(importedData);
+                    render();
+                    closeSettings();
+                    alert('Backup imported successfully! 📤');
+                } catch (error) {
+                    alert('Failed to import backup. Please check the file format.');
+                    console.error('Import error:', error);
+                }
+            };
+
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
+        // Initialize app on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            render();
+        });
+    </script>
+</body>
+</html>
